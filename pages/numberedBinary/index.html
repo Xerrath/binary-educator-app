@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Binary Discovery Lab | Binary Educator</title>
+
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <script>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            slate: {
+                                850: '#1e293b'
+                            },
+                            brand: {
+                                blue: '#3b82f6',
+                                teal: '#0d9488',
+                                emerald: '#10b981',
+                                red: '#ef4444'
+                            }
+                        },
+                        fontFamily: {
+                            sans: ['Inter', 'sans-serif'],
+                            mono: ['JetBrains Mono', 'monospace']
+                        }
+                    }
+                }
+            };
+        </script>
+
+        <link rel="stylesheet" href="./numberedBinary.css">
+    </head>
+
+    <body class="bg-slate-50 text-slate-800 min-h-screen font-sans flex flex-col">
+
+        <nav class="bg-slate-900 text-white">
+            <div class="max-w-6xl mx-auto px-4 md:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                <a href="../../" class="flex items-center gap-3 font-bold text-lg">
+                    <div class="w-10 h-10 rounded-lg bg-brand-blue flex items-center justify-center font-mono text-sm">
+                        01
+                    </div>
+
+                    <span>Binary Educator</span>
+                </a>
+
+                <div class="flex flex-wrap items-center gap-2 md:gap-4 text-sm font-medium">
+
+                    <a
+                        href="../../"
+                        class="px-3 py-2 rounded-lg hover:bg-slate-800 transition-all"
+                    >
+                        Home
+                    </a>
+
+                    <a
+                        href="./"
+                        class="px-3 py-2 rounded-lg bg-slate-800"
+                    >
+                        Binary Discovery
+                    </a>
+
+                    <a
+                        href="../characterBinary/"
+                        class="px-3 py-2 rounded-lg hover:bg-slate-800 transition-all"
+                    >
+                        ASCII Builder
+                    </a>
+
+                </div>
+
+            </div>
+        </nav>
+
+        <main class="flex-1">
+
+            <div class="max-w-4xl mx-auto px-4 md:px-8 py-12 space-y-8">
+
+                <header class="text-center space-y-2">
+                    <h1 class="text-4xl font-bold tracking-tight text-slate-900">
+                        Binary Discovery Lab
+                    </h1>
+
+                    <p class="text-slate-600 max-w-xl mx-auto">
+                        Convert numbers to binary by selecting the largest fitting powers of 2.
+                        Discover the logic through subtraction.
+                    </p>
+                </header>
+
+                <section class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <label
+                        for="decimalInput"
+                        class="block text-sm font-semibold mb-2 text-slate-600 uppercase tracking-wider"
+                    >
+                        Number you wish to convert
+                    </label>
+
+                    <input
+                        type="number"
+                        id="decimalInput"
+                        placeholder="Enter a number (e.g. 420)"
+                        class="w-full text-3xl font-mono p-4 rounded-xl border-2 border-slate-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none transition-all"
+                    >
+                </section>
+
+                <section class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider">
+                            Original Target Number
+                        </div>
+
+                        <div
+                            id="displayOriginal"
+                            class="text-2xl font-mono font-bold text-slate-900 mt-1"
+                        >
+                            0
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                        <div class="text-xs text-slate-500 uppercase font-bold tracking-wider">
+                            Remaining from the target number
+                        </div>
+
+                        <div
+                            id="displayRemaining"
+                            class="text-2xl font-mono font-bold text-brand-teal mt-1"
+                        >
+                            0
+                        </div>
+                    </div>
+
+                </section>
+
+                <section
+                    id="stepsContainer"
+                    class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200"
+                >
+                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
+                        Conversion Steps
+                    </h2>
+
+                    <div
+                        id="stepsList"
+                        class="space-y-2 text-slate-600 font-mono"
+                    >
+                        <p class="text-slate-400 italic">
+                            Select/type a number to begin...
+                        </p>
+                    </div>
+                </section>
+
+                <section class="space-y-4">
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800">
+                                    Binary Switch Board
+                                </h2>
+
+                                <p class="text-sm text-slate-500 mt-1">
+                                    Select the largest power of 2 that fits the remaining value.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            id="boardScroll"
+                            class="flex gap-4 overflow-x-auto pb-4 px-1"
+                        ></div>
+
+                    </div>
+
+                    <div class="text-center font-mono text-xl font-bold p-4 bg-slate-900 text-white rounded-xl">
+                        Current Binary:
+                        <span
+                            id="binaryString"
+                            class="text-brand-blue tracking-[0.2em]"
+                        >
+                            0
+                        </span>
+                    </div>
+
+                </section>
+
+                <section class="flex flex-col sm:flex-row sm:items-center gap-4">
+
+                    <button
+                        id="hintBtn"
+                        type="button"
+                        class="bg-slate-800 hover:bg-slate-700 text-white px-6 py-2 rounded-lg font-medium transition-all"
+                    >
+                        Get Hint
+                    </button>
+
+                    <div
+                        id="feedback"
+                        class="text-sm font-medium sm:ml-auto"
+                        aria-live="polite"
+                    ></div>
+
+                </section>
+
+            </div>
+
+            <section class="bg-slate-900 text-white mt-12">
+                <div class="max-w-6xl mx-auto px-4 md:px-8 py-12 text-center">
+
+                    <h2 class="text-2xl font-bold">
+                        Ready to practice more?
+                    </h2>
+
+                    <p class="text-slate-300 mt-2 mb-6">
+                        Continue exploring how binary represents numbers and characters.
+                    </p>
+
+                    <div class="flex flex-wrap justify-center gap-4">
+
+                        <a
+                            href="./"
+                            class="bg-white text-slate-900 hover:bg-slate-100 px-6 py-2 rounded-lg font-medium transition-all"
+                        >
+                            Binary Discovery
+                        </a>
+
+                        <a
+                            href="../characterBinary/"
+                            class="bg-brand-blue hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-all"
+                        >
+                            ASCII Builder
+                        </a>
+
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="bg-slate-950 text-slate-400">
+            <div class="max-w-6xl mx-auto px-4 md:px-8 py-6 flex flex-col sm:flex-row justify-between gap-2 text-sm">
+
+                <span>
+                    Binary Educator
+                </span>
+
+                <span>
+                    Learn. Build. Discover.
+                </span>
+
+            </div>
+        </footer>
+
+        <div
+            id="successModal"
+            class="hidden fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4"
+        >
+            <div class="bg-white rounded-2xl p-8 max-w-sm w-full text-center space-y-4 shadow-2xl">
+
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                    ✓
+                </div>
+
+                <h2 class="text-2xl font-bold text-slate-900">
+                    Correct!
+                </h2>
+
+                <p
+                    id="finalEquation"
+                    class="text-lg font-mono text-slate-600"
+                ></p>
+
+                <button
+                    type="button"
+                    onclick="location.reload()"
+                    class="bg-slate-800 hover:bg-slate-700 text-white px-6 py-2 rounded-lg font-medium transition-all"
+                >
+                    New Number
+                </button>
+
+            </div>
+        </div>
+
+        <script src="./numberedBinary.js"></script>
+
+    </body>
+</html>
