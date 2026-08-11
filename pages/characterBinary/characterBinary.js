@@ -165,15 +165,15 @@ function buildCharacterTable() {
         const row = document.createElement("tr");
         const decimalCell = document.createElement("td");
         const characterCell = document.createElement("td");
-        const binaryCell = document.createElement("td");
+        // const binaryCell = document.createElement("td");
 
         decimalCell.textContent = value;
         characterCell.textContent = getCharName(value);
-        binaryCell.textContent = value.toString(2).padStart(8, "0");
+        // binaryCell.textContent = value.toString(2).padStart(8, "0");
 
         row.appendChild(decimalCell);
         row.appendChild(characterCell);
-        row.appendChild(binaryCell);
+        // row.appendChild(binaryCell);
 
         tableBody.appendChild(row);
     }
